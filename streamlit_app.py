@@ -7,7 +7,7 @@ f3=st.number_input("Feature 3",min_value=1,max_value=100)
 
 with open('model.pkl','rb') as file:
   model=pickle.load(file)
-model.predict()
+#model.predict()
 
 # st.write(
 #     "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
