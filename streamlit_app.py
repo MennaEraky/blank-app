@@ -14,8 +14,12 @@ Please provide the details in the sidebar.
 """)
 
 # Load the trained model
-with open('model.pkl', 'rb') as file:
-    model = pickle.load(file)
+try:
+    with open('model.pkl', 'rb') as file:
+        model = pickle.load(file)
+except Exception as e:
+    st.error(f"Failed to load the model: {e}")
+    st.stop()
 
 # Sidebar for input fields
 st.sidebar.header("Input Features")
@@ -27,10 +31,17 @@ f3 = st.sidebar.number_input("Fuel Consumption (L/100km)", min_value=1, max_valu
 
 # Prediction button in the sidebar
 if st.sidebar.button("Predict CO2 Emission"):
-    # Make prediction
-    res = model.predict([[f1, f2, f3]])
-    # Display the result on the main page
-    st.markdown(f"### Predicted CO2 Emission: **{res[0]:.2f} g/km**")
+    try:
+        # Make prediction
+        res = model.predict([[f1, f2, f3]])
+        # Ensure the result is valid
+        if res is not None and len(res) > 0:
+            # Display the result on the main page
+            st.markdown(f"### Predicted CO2 Emission: **{res[0]:.2f} g/km**")
+        else:
+            st.error("The model returned an invalid result. Please try again.")
+    except Exception as e:
+        st.error(f"Prediction failed: {e}")
 else:
     st.markdown("### Please enter the car features in the sidebar to get a prediction.")
 
