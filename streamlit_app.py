@@ -34,12 +34,12 @@ if st.sidebar.button("Predict CO2 Emission"):
     try:
         # Make prediction
         res = model.predict([[f1, f2, f3]])
-        # Ensure the result is valid
-        if res is not None and len(res) > 0:
-            # Display the result on the main page
-            st.markdown(f"### Predicted CO2 Emission: **{res[0]:.2f} g/km**")
-        else:
-            st.error("The model returned an invalid result. Please try again.")
+        
+        # Convert the result to a single float value
+        result = float(res[0])
+        
+        # Display the result on the main page
+        st.markdown(f"### Predicted CO2 Emission: **{result:.2f} g/km**")
     except Exception as e:
         st.error(f"Prediction failed: {e}")
 else:
